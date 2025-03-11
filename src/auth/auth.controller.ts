@@ -7,7 +7,6 @@ export class AuthController {
   router = Router();
 
   public loadRoutes() {
-    // get me
     this.router.get(
       "/me",
       authGuard,

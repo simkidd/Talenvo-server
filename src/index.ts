@@ -6,10 +6,10 @@ import { config } from "./utils/config.utils";
 import { UserController } from "./users/user.controller";
 import { AuthController } from "./auth/auth.controller";
 import { CourseController } from "./courses/course.controller";
+import { setupSwagger } from "./utils/swagger.config";
 const PORT = Number(process.env.PORT) || 8000;
 
 const app = express();
-
 class Server {
   private userRoutes = new UserController().loadRoutes();
   private authRoutes = new AuthController().loadRoutes();
@@ -33,6 +33,7 @@ class Server {
     app.listen(PORT, () => {
       console.log(`server started on port ${PORT}`);
     });
+    setupSwagger(app);
   }
 }
 

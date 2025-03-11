@@ -10,11 +10,12 @@ import {
 } from "./auth.dto";
 import { Auth, AuthDocument } from "./auth.schema";
 import { User, UsersDocument } from "../users/user.schema";
+import { cloudinaryUpload } from "../utils/cloudinaryUpload";
 
 export class AuthService {
   // signup
   public async signup(input: SignupInput): Promise<UsersDocument> {
-    const { email, password, ...rest } = input;
+    const { email, password, image, ...rest } = input;
     try {
       // check for duplicate email
       let auth = await Auth.findOne({ email });
@@ -22,10 +23,14 @@ export class AuthService {
       // create an instance of the auth
       auth = new Auth({ email });
       auth.password = this.hashPassword(password);
+
       // check if a user profile with the same email exist
       let user = await User.findOne({ email });
+
       if (!user) {
+        const imageUrl = await cloudinaryUpload(image);
         user = new User(rest);
+        user.image = imageUrl;
         user.email = email;
         await user.save();
       }

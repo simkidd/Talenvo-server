@@ -15,7 +15,7 @@ export class CourseService {
   public async createCourse(input: CreateCourseInput): Promise<CourseDocument> {
     const { image } = input;
     try {
-      const isCourse = await Course.findOne(input.description);
+      const isCourse = await Course.findOne(input.title);
       if (isCourse) throw new Error("Course already exist.");
       const course = new Course(input);
       if (image) {

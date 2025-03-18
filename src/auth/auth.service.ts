@@ -32,12 +32,11 @@ export class AuthService {
         let imageUrl = "";
       
       if (image) {
-        try {
+        
           imageUrl = await cloudinaryUpload(image);
-        } catch (err) {
-          throw new Error(`Cloudinary upload failed: ${err.message}`);
-        }
+        
       }
+      
 
       user = new User(rest);
       if (imageUrl) user.image = imageUrl

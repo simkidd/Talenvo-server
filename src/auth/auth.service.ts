@@ -28,9 +28,20 @@ export class AuthService {
       let user = await User.findOne({ email });
 
       if (!user) {
-        const imageUrl = await cloudinaryUpload(image);
-        user = new User(rest);
-        user.image = imageUrl;
+
+        let imageUrl = "";
+      
+      if (image) {
+        try {
+          imageUrl = await cloudinaryUpload(image);
+        } catch (err) {
+          throw new Error(`Cloudinary upload failed: ${err.message}`);
+        }
+      }
+
+      user = new User(rest);
+      if (imageUrl) user.image = imageUrl
+        
         user.email = email;
         await user.save();
       }
